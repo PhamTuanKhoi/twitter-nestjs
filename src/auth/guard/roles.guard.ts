@@ -16,7 +16,7 @@ export class RolesGuard implements CanActivate {
     private authService: AuthService,
   ) {}
 
-  async canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<UserRoleEnum[]>(
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
@@ -39,6 +39,7 @@ export class RolesGuard implements CanActivate {
     const [, jwt] = authPath;
 
     const { user } = await this.authService.verifyJwt(jwt);
+    console.log(user?.role, requiredRoles);
 
     return requiredRoles.some((role) => user?.role === role);
   }

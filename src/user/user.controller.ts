@@ -19,6 +19,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRoleEnum.ADMIN)
   findAll() {
     return this.userService.findAll();
   }
