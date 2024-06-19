@@ -10,9 +10,10 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/auth/decorator/roles.decorator';
-import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UserRoleEnum } from './dto/user-role.enum';
+import { User } from './schema/user.schema';
 
 @Controller('user')
 export class UserController {
@@ -21,7 +22,7 @@ export class UserController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @Roles(UserRoleEnum.ADMIN)
-  findAll() {
+  async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 

@@ -12,12 +12,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRoleEnum } from './dto/user-role.enum';
 import { User } from './schema/user.schema';
 import * as bcrypt from 'bcrypt';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
 
-  constructor(@InjectModel(User.name) private model: Model<User>) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   // {
   //   "name": "Pham Tuan Thanh",
@@ -37,7 +38,7 @@ export class UserService {
         10,
       );
 
-      const created = await this.model.create({
+      const created = await this.userRepository.create({
         ...registerUserDto,
       });
 
@@ -50,31 +51,29 @@ export class UserService {
   }
 
   async block(id: string) {
-    try {
-      const user = await this.isModelExist(id);
-
-      const updated = await this.model.findByIdAndUpdate(id, {
-        block: !user.block,
-      });
-
-      this.logger.log(`block user ${updated?.block} success`, updated?._id);
-      return updated;
-    } catch (error) {
-      this.logger.error(error?.message, error.stack);
-      throw new BadRequestException(error?.message);
-    }
+    // try {
+    //   const user = await this.isModelExist(id);
+    //   const updated = await this.userRepository.findByIdAndUpdate(id, {
+    //     block: !user.block,
+    //   });
+    //   this.logger.log(`block user ${updated?.block} success`, updated?._id);
+    //   return updated;
+    // } catch (error) {
+    //   this.logger.error(error?.message, error.stack);
+    //   throw new BadRequestException(error?.message);
+    // }
   }
 
-  findAll() {
-    return this.model.find();
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find({});
   }
 
   findById(id: string) {
-    return this.model.findById(id).lean();
+    return this.userRepository.findById(id);
   }
 
   async findByEmail(email: string) {
-    return this.model.findOne({ email }).select('+password').lean();
+    return this.userRepository.findByEmail(email);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
