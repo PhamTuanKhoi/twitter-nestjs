@@ -20,8 +20,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @Roles(UserRoleEnum.ADMIN)
+  // @UseGuards(JwtAuthGuard)
+  // @Roles(UserRoleEnum.ADMIN)
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
@@ -34,7 +34,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: string) {
+  findById(@Param('id') id: string): Promise<User> {
     return this.userService.findById(id);
   }
 

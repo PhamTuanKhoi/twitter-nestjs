@@ -68,7 +68,7 @@ export class UserService {
     return this.userRepository.find({});
   }
 
-  findById(id: string) {
+  findById(id: string): Promise<User> {
     return this.userRepository.findById(id);
   }
 

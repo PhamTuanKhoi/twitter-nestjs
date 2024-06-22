@@ -22,8 +22,8 @@ describe('UserController', () => {
     jest.clearAllMocks();
   });
 
-  describe('getUsers', () => {
-    describe('when getUsers is called', () => {
+  describe('findAll', () => {
+    describe('when findAll is called', () => {
       let users: User[];
 
       beforeEach(async () => {
@@ -36,6 +36,24 @@ describe('UserController', () => {
 
       test('then it should return users', () => {
         expect(users).toEqual([userStub()]);
+      });
+    });
+  });
+
+  describe('find by id', () => {
+    describe('when findById is caller', () => {
+      let user: User;
+
+      beforeEach(async () => {
+        user = await userController.findById(userStub()._id);
+      });
+
+      test('then it should call userService', () => {
+        expect(userService.findById).toHaveBeenCalled();
+      });
+
+      test('then it should return users', () => {
+        expect(user).toEqual(userStub());
       });
     });
   });
