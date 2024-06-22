@@ -20,17 +20,10 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
-  // @Roles(UserRoleEnum.ADMIN)
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll();
-  }
-
-  @Get('block/:id')
   @UseGuards(JwtAuthGuard)
   @Roles(UserRoleEnum.ADMIN)
-  block(@Param('id') id: string) {
-    return this.userService.block(id);
+  async findAll(): Promise<User[]> {
+    return this.userService.findAll();
   }
 
   @Get(':id')

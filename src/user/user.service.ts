@@ -13,9 +13,10 @@ import { UserRoleEnum } from './dto/user-role.enum';
 import { User } from './schema/user.schema';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from './user.repository';
+import { IUserService } from './interfaces/user.service.impl';
 
 @Injectable()
-export class UserService {
+export class UserService implements IUserService {
   private readonly logger = new Logger(UserService.name);
 
   constructor(private readonly userRepository: UserRepository) {}
@@ -26,7 +27,7 @@ export class UserService {
   //   "password": "1234",
   //   "role": "user"
   // }
-  async create(registerUserDto: RegisterUserDto) {
+  async create(registerUserDto: RegisterUserDto): Promise<User> {
     try {
       const email_exist = await this.findByEmail(registerUserDto.email);
 
@@ -50,20 +51,6 @@ export class UserService {
     }
   }
 
-  async block(id: string) {
-    // try {
-    //   const user = await this.isModelExist(id);
-    //   const updated = await this.userRepository.findByIdAndUpdate(id, {
-    //     block: !user.block,
-    //   });
-    //   this.logger.log(`block user ${updated?.block} success`, updated?._id);
-    //   return updated;
-    // } catch (error) {
-    //   this.logger.error(error?.message, error.stack);
-    //   throw new BadRequestException(error?.message);
-    // }
-  }
-
   async findAll(): Promise<User[]> {
     return this.userRepository.find({});
   }
@@ -72,7 +59,7 @@ export class UserService {
     return this.userRepository.findById(id);
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<User> {
     return this.userRepository.findByEmail(email);
   }
 
@@ -84,7 +71,7 @@ export class UserService {
     return `This action removes a #${id} user`;
   }
 
-  async isModelExist(id, isOptional = false, msg = '') {
+  async isModelExist(id, isOptional = false, msg = ''): Promise<User> {
     if (isOptional && !id) return;
     const errorMessage = msg || `${User.name} not found`;
     const isExist = await this.findById(id);
