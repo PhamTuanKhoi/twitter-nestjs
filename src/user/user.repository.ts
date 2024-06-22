@@ -13,8 +13,8 @@ export class UserRepository extends BaseAbstractRepository<UserDocument> {
     super(model);
   }
 
-  findById(id: string) {
-    return this.userModel.findById(id).lean();
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(id).lean().exec();
   }
 
   async findByEmail(email: string) {
