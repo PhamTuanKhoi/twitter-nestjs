@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { RegisterUserDto } from 'src/user/dto/register-user.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from 'src/user/dto/login-user.dto';
+import { User } from 'src/user/schema/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,9 @@ export class AuthService {
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const user = await this.userService.findByEmail(loginUserDto.email);
+    const user: User & { _id: string } = (await this.userService.findByEmail(
+      loginUserDto.email,
+    )) as User & { _id: string };
     if (!user)
       throw new HttpException(`email incorrect !`, HttpStatus.NOT_FOUND);
 

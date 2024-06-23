@@ -13,7 +13,7 @@ import { UserRoleEnum } from './dto/user-role.enum';
 import { User } from './schema/user.schema';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from './user.repository';
-import { IUserService } from './interfaces/user.service.impl';
+import { IUserService } from './interfaces/user.service.interface';
 
 @Injectable()
 export class UserService implements IUserService {
