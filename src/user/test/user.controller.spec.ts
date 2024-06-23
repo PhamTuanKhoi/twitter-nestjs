@@ -45,7 +45,7 @@ describe('UserController', () => {
       let user: User;
 
       beforeEach(async () => {
-        user = await userController.findById(userStub()._id);
+        user = await userController.findById(userStub()._id.toString());
       });
 
       test('then it should call userService', () => {

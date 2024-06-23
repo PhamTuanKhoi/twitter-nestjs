@@ -59,7 +59,7 @@ describe('UserRepository', () => {
 
       beforeEach(async () => {
         jest.spyOn(userModel, 'findById');
-        user = await userRepository.findById(userStub()._id);
+        user = await userRepository.findById(userStub()._id.toString());
       });
 
       test('then it should call the userModel', () => {
