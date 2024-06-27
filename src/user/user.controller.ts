@@ -14,7 +14,10 @@ import { Roles } from '../auth/decorator/roles.decorator';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { UserRoleEnum } from './dto/user-role.enum';
 import { User } from './schema/user.schema';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -27,6 +30,8 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRoleEnum.ADMIN)
   findById(@Param('id') id: string): Promise<User> {
     return this.userService.findById(id);
   }

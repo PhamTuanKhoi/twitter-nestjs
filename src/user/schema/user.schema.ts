@@ -17,7 +17,7 @@ export class User {
   @Prop({ select: false })
   password: string;
 
-  @Prop()
+  @Prop({ default: UserRoleEnum.USER })
   role: UserRoleEnum;
 
   @Prop({ default: false })
